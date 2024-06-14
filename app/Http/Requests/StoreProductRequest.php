@@ -24,9 +24,17 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
+            'name' => ['required', 'max:255'],
             'description' => ['required'],
-            'price' => ['required']
+            'price' => ['required', 'numeric']
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'price.required' => 'The price field is required',
+            'price.numeric' => 'The price must be a number.'
+        ];   
     }
 }
