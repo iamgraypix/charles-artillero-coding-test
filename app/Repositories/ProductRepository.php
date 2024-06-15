@@ -8,19 +8,37 @@ use Illuminate\Support\Facades\Cache;
 
 class ProductRepository implements ProductRepositoryInterface
 {
+    public function __construct() {
+        if (Product::count() === 0){
+            Cache::flush();
+        }
+    }
    
     public function getAll()
     {
-        $products = Cache::remember('products', random_int(120, 300), function () {
-            return Product::paginate();
+        $products = Product::paginate();
+
+        if ($products->count() === 0)
+        {
+            return $products;
+        }
+
+        $cachedProducts = Cache::remember('products', random_int(120, 300), function () use ($products) {
+            return $products;
         });
 
-        return $products;
+        return $cachedProducts;
     }
 
     public function createProduct(array $productDetails)
     {
-        return Product::create($productDetails);
+        $newProduct = Product::create($productDetails);
+
+        // update the cache
+        Cache::pull("products");
+        Cache::put("products", Product::paginate(), random_int(120, 300));
+
+        return $newProduct;
     }
 
     public function findProduct(int $id)
@@ -54,6 +72,8 @@ class ProductRepository implements ProductRepositoryInterface
         $product = $this->findProduct($id);
         $product->delete();
 
+        // update cache
         Cache::forget("product_{$id}");
+        Cache::forget("products");
     }
 }
