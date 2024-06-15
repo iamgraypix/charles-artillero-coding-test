@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repositories;
 
@@ -16,7 +16,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return Product::create($productDetails);
     }
-    
+
     public function findProduct(int $id)
     {
         return Product::findOrFail($id);
@@ -25,7 +25,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function update(int $id, array $fields)
     {
         $product = $this->findProduct($id);
-        
+
         $product->update($fields);
     }
 

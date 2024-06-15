@@ -8,15 +8,17 @@ use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductResourceCollection;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
 
-    private ProductRepositoryInterface $productRepository;
+    private ProductService $productService;
 
-    public function __construct(ProductRepositoryInterface $productRepository) {
-        $this->productRepository = $productRepository;
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
     }
 
     /**
@@ -26,7 +28,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productRepository->getAll();
+        $products = $this->productService->getAllProduct();
 
         return new ProductResourceCollection($products);
     }
@@ -49,8 +51,8 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        
-        $newProduct = $this->productRepository->createProduct($request->all());
+
+        $newProduct = $this->productService->createProduct($request->all());
 
         return new ProductResource($newProduct);
     }
@@ -63,8 +65,8 @@ class ProductController extends Controller
      */
     public function show(int $id)
     {
-        $product = $this->productRepository->findProduct($id);
-        
+        $product = $this->productService->getProductById($id);
+
         return new ProductResource($product);
     }
 
@@ -88,7 +90,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, int $id)
     {
-        $this->productRepository->update($id, $request->all());
+        $this->productService->updateProduct($id, $request->all());
     }
 
     /**
@@ -99,6 +101,6 @@ class ProductController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->productRepository->deleteProduct($id);
+        $this->productService->deleteProduct($id);
     }
 }
