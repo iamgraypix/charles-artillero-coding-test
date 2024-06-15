@@ -62,6 +62,9 @@ class ProductRepository implements ProductRepositoryInterface
         Cache::pull("product_{$id}");
         Cache::put("product_{$id}", $product, random_int(120, 300));
 
+        Cache::pull("products");
+        Cache::put("products", Product::paginate(), random_int(120, 300));
+
         return $product;
         
         
