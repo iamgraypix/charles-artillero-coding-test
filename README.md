@@ -105,4 +105,6 @@ Others:
 Q: The management requested a new feature where in the fictional e-commerce app must have a "featured products" section.
 How would you go about implementing this feature in the backend?
 
-A: _Put your answer here_
+A: _First I will update the products table by adding new column called 'is_featured. From this I can create a query that filters the products by 'is_featured' column to get all the featured products. Also I will create new endpoint that can mark the product as featured or unmark it.
+
+Example new endpoint 1: PATCH api/products/featured data: {int product_id, bool is_featured}_
