@@ -1,0 +1,6 @@
+
+1. run composer install
+2. create .env file by duplicating the example
+3. configure the database in env
+4. run php artisan migrate
+5. run php artisan key:generate
