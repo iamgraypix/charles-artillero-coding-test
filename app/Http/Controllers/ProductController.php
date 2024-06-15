@@ -6,11 +6,19 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductResourceCollection;
+use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    private ProductRepositoryInterface $productRepository;
+
+    public function __construct(ProductRepositoryInterface $productRepository) {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +26,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return new ProductResourceCollection(Product::paginate());
+        $products = $this->productRepository->getAll();
+
+        return new ProductResourceCollection($products);
     }
 
     /**
@@ -39,7 +49,10 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        return new ProductResource(Product::create($request->all()));
+        
+        $newProduct = $this->productRepository->createProduct($request->all());
+
+        return new ProductResource($newProduct);
     }
 
     /**
@@ -48,8 +61,10 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(int $id)
     {
+        $product = $this->productRepository->findProduct($id);
+        
         return new ProductResource($product);
     }
 
@@ -71,9 +86,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, int $id)
     {
-        $product->update($request->all());
+        $this->productRepository->update($id, $request->all());
     }
 
     /**
@@ -82,8 +97,8 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(int $id)
     {
-        $product->delete();
+        $this->productRepository->deleteProduct($id);
     }
 }

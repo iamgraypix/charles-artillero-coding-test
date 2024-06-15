@@ -156,6 +156,9 @@ return [
 
     'providers' => [
 
+        // Repositories Services
+        App\Providers\RepositoryServiceProvider::class,
+
         /*
          * Laravel Framework Service Providers...
          */
