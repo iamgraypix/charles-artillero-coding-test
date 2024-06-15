@@ -118,7 +118,7 @@ class ProductsTest extends TestCase
 
     public function test_validation_max_product_name()
     {
-        $name = substr(fake()->sentence(50), 0, 257);
+        $name = substr(fake()->sentence(50), 0, 300);
         $data = [
             'name' => $name,
             'description' => 'test description',
