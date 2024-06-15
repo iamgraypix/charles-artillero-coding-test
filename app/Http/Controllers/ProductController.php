@@ -88,7 +88,9 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, int $id)
     {
-        $this->productService->updateProduct($id, $request->all());
+        $updated = $this->productService->updateProduct($id, $request->all());
+        
+        return new ProductResource($updated);
     }
 
     /**

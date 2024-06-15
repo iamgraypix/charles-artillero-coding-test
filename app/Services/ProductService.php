@@ -29,7 +29,7 @@ class ProductService
 
     public function updateProduct(int $id, array $fields)
     {
-        $this->productRepository->update($id, $fields);
+        return $this->productRepository->update($id, $fields);
     }
 
     public function deleteProduct(int $id)
