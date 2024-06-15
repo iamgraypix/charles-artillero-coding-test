@@ -26,7 +26,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => ['required', 'max:255'],
             'description' => ['required'],
-            'price' => ['required', 'numeric']
+            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/']
         ];
     }
 
@@ -34,7 +34,8 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'price.required' => 'The price field is required',
-            'price.numeric' => 'The price must be a number.'
+            'price.numeric' => 'The price must be a number.',
+            'price.regex' => 'The price must up two decimal only'
         ];   
     }
 }
