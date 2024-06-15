@@ -29,13 +29,13 @@ class UpdateProductRequest extends FormRequest
             return [
                 'name' => ['required', 'max:255'],
                 'description' => ['required'],
-                'price' => ['required', 'numeric']
+                'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/']
             ];
         } else {
             return [
                 'name' => ['sometimes', 'required', 'max:255'],
                 'description' => ['sometimes', 'required'],
-                'price' => ['sometimes', 'required', 'numeric']
+                'price' => ['sometimes', 'required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/']
             ];
         }
     }
@@ -44,7 +44,8 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'price.required' => 'The price field is required',
-            'price.numeric' => 'The price must be a number.'
+            'price.numeric' => 'The price must be a number.',
+            'price.regex' => 'The price must up two decimal only'
         ];
     }
 }
